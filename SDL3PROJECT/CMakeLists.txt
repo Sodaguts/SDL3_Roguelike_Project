@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.20)
 
 project(SDL3PROJECT)
 add_executable(roguework) # WIN 32 - hide the console like this
-#add_executable(roguework WIN32)
 set_target_properties(roguework PROPERTIES WIN32_EXECUTABLE "TRUE")
 
 target_sources(roguework PRIVATE main.cpp)
