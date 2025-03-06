@@ -71,7 +71,6 @@ MESSAGE(STATUS "SDL2 TIME: ${DELTASDL}s")
 #MESSAGE(STATUS "SDL_ttf TIME: ${DELTASDL_ttf}s")
 
 
-
 #
 ### SDL_mixer
 #string(TIMESTAMP BEFORE "%s")
