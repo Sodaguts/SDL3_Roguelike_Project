@@ -8,6 +8,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
+#include <string>
 
 
 /* We will use this renderer to draw into this window every frame. */
@@ -22,8 +23,9 @@ typedef enum GAME_SCREENS
     TITLE,
     GAMEPLAY,
     END,
-}game_screens;
+}game_screen;
 
+game_screen current_screen = TITLE;
 
 class Game {
 public:
@@ -45,6 +47,7 @@ public:
         g_surface = NULL;
         g_renderer = NULL;
         test_texture = NULL;
+        g_isRunning = true;
 
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
@@ -66,45 +69,35 @@ public:
 
     void g_loop() 
     {
-        SDL_Event event;
+        SDL_Event g_event;
 
-        //load image
-        SDL_Surface* sp_title = SDL_LoadBMP("title_screen_b.bmp");
-        if (sp_title == NULL) 
-        {
-            printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", "images/TEST_SPRITE.bmp", SDL_GetError());
-        }
+        //load images
+        SDL_Surface* sp_title = loadMediaBMP("title_screen_b.bmp");
+        SDL_Surface* sp_test = loadMediaBMP("TEST_SPRITE.bmp");
 
         SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
+        
 
-        bool isRunning = true;
 
-        while (isRunning) 
+        while (g_isRunning) 
         {
-            SDL_PollEvent(&event);
-            switch (event.type) 
-            {
-                case SDL_EVENT_KEY_DOWN:
-                    printf("key pressed!\n");
-                    if (event.key.key == SDLK_ESCAPE) 
-                    {
-                        isRunning = false;
-                    }
-                    break;
-                case SDL_EVENT_KEY_UP:
-                    printf("key released!\n");
-                    break;
-                case SDL_EVENT_QUIT:
-                    isRunning = false;
-                    break;
+            
 
-            }
+            SDL_PollEvent(&g_event);
+            g_isRunning = handleGameScreen(current_screen,g_event);
             //SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0x00);
             //SDL_RenderClear(renderer);
 
             // render textures here
-            SDL_BlitSurfaceScaled(sp_title, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
-
+            SDL_FillSurfaceRect(g_surface, NULL, SDL_MapSurfaceRGB(g_surface, 0x00, 0x00, 0x00));
+            if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
+            {
+                SDL_BlitSurfaceScaled(sp_title, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
+            }
+            else 
+            {
+                SDL_BlitSurfaceScaled(sp_test, NULL, g_surface, &playerRect, SDL_SCALEMODE_NEAREST);
+            }
             SDL_UpdateWindowSurface(g_window);
 
             //SDL_RenderPresent(renderer);
@@ -119,6 +112,89 @@ private:
     SDL_Renderer* g_renderer;
     SDL_Surface* g_surface;
     SDL_Texture* test_texture;
+    bool g_isRunning;
+
+    int test_num = 0;
+
+    SDL_Rect playerRect = { 0,0,120,120 };
+
+    bool handleGameScreen(game_screen _screen, SDL_Event _event) 
+    {
+        bool isRunning = true;
+        switch (_screen) 
+        {
+            case TITLE:
+                isRunning = doTitle(_event);
+                break;
+            case GAMEPLAY:
+                isRunning = doGameplay(_event);
+                break;
+            case END:
+                // this is like gameover stuff 
+                break;
+        }
+        return isRunning;
+    }
+
+    bool doTitle(SDL_Event _event) 
+    {
+        test_num = 0;
+        playerRect = {0,0,120,120};
+        switch (_event.type) 
+        {
+            case SDL_EVENT_KEY_DOWN:
+                if (_event.key.key == SDLK_ESCAPE) 
+                {
+                    return false;
+                }
+                else if (_event.key.key == SDLK_SPACE) 
+                {
+                    current_screen = GAMEPLAY;
+                    return true;
+                }
+                // continue to next game screen
+                break;
+            case SDL_EVENT_QUIT:
+                return false;
+                break;
+        }
+        return true;
+    }
+
+    bool doGameplay(SDL_Event _event) 
+    {
+        switch (_event.type) 
+        {
+            case SDL_EVENT_KEY_DOWN:
+                if (_event.key.key == SDLK_ESCAPE) 
+                {
+                    current_screen = TITLE;
+                    return true;
+                }
+                if (_event.key.key == SDLK_0) 
+                {
+                    test_num += 10;
+                    playerRect = {test_num,0,120,120 };
+                    return true;
+                }
+                break;
+            case SDL_EVENT_QUIT:
+                return false;
+                break;
+        }
+        return true;
+    }
+
+    SDL_Surface* loadMediaBMP(std::string file_path) 
+    {
+        SDL_Surface* p_surface = SDL_LoadBMP(file_path.c_str());
+        if (p_surface == NULL) 
+        {
+            printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", file_path, SDL_GetError());
+        }
+        return p_surface;
+    }
+
 };
 
 
