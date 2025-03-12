@@ -114,9 +114,10 @@ private:
     SDL_Texture* test_texture;
     bool g_isRunning;
 
-    int test_num = 0;
+    int player_x = 0;
+    int player_y = 0;
 
-    SDL_Rect playerRect = { 0,0,120,120 };
+    SDL_Rect playerRect = { player_x,player_y,120,120 };
 
     bool handleGameScreen(game_screen _screen, SDL_Event _event) 
     {
@@ -138,8 +139,9 @@ private:
 
     bool doTitle(SDL_Event _event) 
     {
-        test_num = 0;
-        playerRect = {0,0,120,120};
+        player_x = 0;
+        player_y = 0;
+        playerRect = {player_x,player_y,120,120};
         switch (_event.type) 
         {
             case SDL_EVENT_KEY_DOWN:
@@ -171,10 +173,28 @@ private:
                     current_screen = TITLE;
                     return true;
                 }
-                if (_event.key.key == SDLK_0) 
+                if (_event.key.key == SDLK_RIGHT) 
                 {
-                    test_num += 10;
-                    playerRect = {test_num,0,120,120 };
+                    player_x += 10;
+                    playerRect = {player_x,player_y,120,120 };
+                    return true;
+                }
+                if (_event.key.key == SDLK_LEFT) 
+                {
+                    player_x -= 10;
+                    playerRect = {player_x, player_y,120,120};
+                    return true;
+                }
+                if (_event.key.key == SDLK_UP) 
+                {
+                    player_y -= 10;
+                    playerRect = { player_x, player_y, 120,120 };
+                    return true;
+                }
+                if (_event.key.key == SDLK_DOWN) 
+                {
+                    player_y += 10;
+                    playerRect = {player_x, player_y, 120, 120};
                     return true;
                 }
                 break;
