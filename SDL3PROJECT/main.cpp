@@ -14,36 +14,15 @@
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
-const int SCREEN_WIDTH = 1280/2;
-const int SCREEN_HEIGHT = 960/2;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 960;
 
 
 class Game {
 public:
     Game()
     {
-        g_window = NULL;
-        g_surface = NULL;
-        g_renderer = NULL;
-        test_texture = NULL;
-
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) 
-        {
-            printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        }
-        else 
-        {
-            if (!SDL_CreateWindowAndRenderer("ROGUEWORK AHEAD", SCREEN_WIDTH, SCREEN_HEIGHT, 0, &g_window, &g_renderer))
-            {
-                printf("SDL could not initialize window and renderer! SDL_Error: %s\n", SDL_GetError());
-            }
-            else 
-            {
-                g_surface = SDL_GetWindowSurface(g_window);
-            }
-        }
-
-        
+        init();     
     };
     ~Game() 
     {
@@ -53,7 +32,30 @@ public:
         SDL_Quit();
     }
 
-    void init() {}; // TODO: ADD IMPLEMENTATION
+    void init() 
+    {
+        g_window = NULL;
+        g_surface = NULL;
+        g_renderer = NULL;
+        test_texture = NULL;
+
+        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        {
+            printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        }
+        else
+        {
+            if (!SDL_CreateWindowAndRenderer("ROGUEWORK AHEAD", SCREEN_WIDTH, SCREEN_HEIGHT, 0, &g_window, &g_renderer))
+            {
+                printf("SDL could not initialize window and renderer! SDL_Error: %s\n", SDL_GetError());
+            }
+            else
+            {
+                g_surface = SDL_GetWindowSurface(g_window);
+            }
+        }
+
+    };
 
     void g_loop() 
     {
@@ -63,8 +65,10 @@ public:
         SDL_Surface* p_mouseButton = SDL_LoadBMP("TEST_SPRITE.bmp");
         if (p_mouseButton == NULL) 
         {
-            printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", "images/aoi.bmp", SDL_GetError());
+            printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", "images/TEST_SPRITE.bmp", SDL_GetError());
         }
+
+        SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
 
         while (1) 
         {
@@ -77,7 +81,7 @@ public:
             //SDL_RenderClear(renderer);
 
             // render textures here
-            SDL_BlitSurface(p_mouseButton, NULL, g_surface, NULL);
+            SDL_BlitSurfaceScaled(p_mouseButton, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
 
             SDL_UpdateWindowSurface(g_window);
 
