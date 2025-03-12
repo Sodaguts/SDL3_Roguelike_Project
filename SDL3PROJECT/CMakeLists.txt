@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(SDL3PROJECT)
 add_executable(roguework) # WIN 32 - hide the console like this
-set_target_properties(roguework PROPERTIES WIN32_EXECUTABLE "TRUE")
+#set_target_properties(roguework PROPERTIES WIN32_EXECUTABLE "TRUE")
 
 set(CPM_DOWNLOAD_VERSION 0.27.2)
 set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
@@ -100,3 +100,19 @@ ENDIF()
 target_sources(roguework PRIVATE main.cpp)
 target_link_libraries(roguework PRIVATE ${LIBS})
 
+# add images
+file(GLOB RESOURCE_FILES "images/*.bmp")
+set(RESOURCE_FILE_NAMES)
+set(RESOURCE_FILES_BINDIR)
+foreach(resource_file IN LISTS RESOURCE_FILES)
+    get_filename_component(res_file_name ${resource_file} NAME)
+    list(APPEND RESOURCE_FILE_NAMES "${res_file_name}")
+    set(resource_file_bindir "${CMAKE_CURRENT_BINARY_DIR}/${res_file_name}")
+    add_custom_command(OUTPUT "${resource_file_bindir}"
+        COMMAND "${CMAKE_COMMAND}" -E copy "${resource_file}" "${resource_file_bindir}"
+        DEPENDS "${resource_file}"
+    )
+    list(APPEND RESOURCE_FILES_BINDIR "${resource_file_bindir}")
+endforeach()
+add_custom_target(copy-resources DEPENDS "${RESOURCE_FILES_BINDIR}")
+add_dependencies(roguework copy-resources)
