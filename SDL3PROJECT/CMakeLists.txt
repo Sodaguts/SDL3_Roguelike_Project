@@ -20,12 +20,12 @@ endif()
 
 include(${CPM_DOWNLOAD_LOCATION})
 
+set(LIBS)
+
 if(NOT DEFINED EMSCRIPTEN)
 SET(BUILD_SHARED_LIBS OFF CACHE BOOL "BUILD_SHARED_LIBS" FORCE)
 SET(BUILD_STATIC_LIBS ON CACHE BOOL "BUILD_STATIC_LIBS" FORCE)
 SET(POSITION_INDEPENDENT_CODE ON CACHE BOOL "POSITION_INDEPENDENT_CODE" FORCE)
-
-set(LIBS)
 
 # SDL
 string(TIMESTAMP BEFORE "%s")
@@ -57,9 +57,6 @@ math(EXPR DELTASDL "${AFTER} - ${BEFORE}")
 MESSAGE(STATUS "SDL3 TIME: ${DELTASDL}s")
 
 list(APPEND LIBS SDL3::SDL3)
-
-
-
 
 
 ## SDL_ttf
@@ -97,7 +94,9 @@ list(APPEND LIBS SDL3::SDL3)
 #MESSAGE(STATUS "SDL_mixer TIME: ${DELTASDL_mixer}s")
 ENDIF()
 
-target_sources(roguework PRIVATE main.cpp)
+file(GLOB sources *.cpp)
+
+target_sources(roguework PRIVATE ${sources})
 target_link_libraries(roguework PRIVATE ${LIBS})
 
 # add images

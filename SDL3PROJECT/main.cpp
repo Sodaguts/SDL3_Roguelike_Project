@@ -14,8 +14,15 @@
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 960;
+const int SCREEN_WIDTH = 1280*2;
+const int SCREEN_HEIGHT = 960*2;
+
+typedef enum GAME_SCREENS 
+{
+    TITLE,
+    GAMEPLAY,
+    END,
+}game_screens;
 
 
 class Game {
@@ -62,33 +69,48 @@ public:
         SDL_Event event;
 
         //load image
-        SDL_Surface* p_mouseButton = SDL_LoadBMP("TEST_SPRITE.bmp");
-        if (p_mouseButton == NULL) 
+        SDL_Surface* sp_title = SDL_LoadBMP("title_screen_b.bmp");
+        if (sp_title == NULL) 
         {
             printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", "images/TEST_SPRITE.bmp", SDL_GetError());
         }
 
         SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
 
-        while (1) 
+        bool isRunning = true;
+
+        while (isRunning) 
         {
             SDL_PollEvent(&event);
-            if (event.type == SDL_EVENT_QUIT) 
+            switch (event.type) 
             {
-                break;
+                case SDL_EVENT_KEY_DOWN:
+                    printf("key pressed!\n");
+                    if (event.key.key == SDLK_ESCAPE) 
+                    {
+                        isRunning = false;
+                    }
+                    break;
+                case SDL_EVENT_KEY_UP:
+                    printf("key released!\n");
+                    break;
+                case SDL_EVENT_QUIT:
+                    isRunning = false;
+                    break;
+
             }
             //SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0x00);
             //SDL_RenderClear(renderer);
 
             // render textures here
-            SDL_BlitSurfaceScaled(p_mouseButton, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
+            SDL_BlitSurfaceScaled(sp_title, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
 
             SDL_UpdateWindowSurface(g_window);
 
             //SDL_RenderPresent(renderer);
         }
 
-        SDL_DestroySurface(p_mouseButton);
+        SDL_DestroySurface(sp_title);
     };
 
 
