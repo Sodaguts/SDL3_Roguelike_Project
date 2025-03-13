@@ -74,9 +74,11 @@ public:
         //load images
         SDL_Surface* sp_title = loadMediaBMP("title_screen_b.bmp");
         SDL_Surface* sp_test = loadMediaBMP("TEST_SPRITE.bmp");
+        SDL_Surface* sp_tile = loadMediaBMP("tile_walkable_a.bmp");
+        SDL_Surface* sp_player = loadMediaBMP("player_a.bmp");
 
         SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
-        
+        SDL_Rect tileRect = { 0,0,120,120 };
 
 
         while (g_isRunning) 
@@ -94,9 +96,24 @@ public:
             {
                 SDL_BlitSurfaceScaled(sp_title, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
             }
-            else 
+            else
             {
-                SDL_BlitSurfaceScaled(sp_test, NULL, g_surface, &playerRect, SDL_SCALEMODE_NEAREST);
+                int tileX = 0;
+                int tileY = 0;
+                for (int i = 0; i < 10; i++) 
+                {
+                    
+                    tileX = 0;
+                    for (int j = 0; j < 10; j++) 
+                    {
+                        
+                        tileRect = {tileX,tileY,120,120};
+                        SDL_BlitSurfaceScaled(sp_tile, NULL, g_surface, &tileRect, SDL_SCALEMODE_NEAREST);
+                        tileX += 120;
+                    }
+                    tileY += 120;
+                }
+                SDL_BlitSurfaceScaled(sp_player, NULL, g_surface, &playerRect, SDL_SCALEMODE_NEAREST);
             }
             SDL_UpdateWindowSurface(g_window);
 
@@ -114,8 +131,11 @@ private:
     SDL_Texture* test_texture;
     bool g_isRunning;
 
-    int player_x = 0;
-    int player_y = 0;
+    bool player_can_run = true;
+
+    int player_x = 45;
+    int player_y = 45;
+    int player_step = 120;
 
     SDL_Rect playerRect = { player_x,player_y,120,120 };
 
@@ -173,28 +193,57 @@ private:
                     current_screen = TITLE;
                     return true;
                 }
-                if (_event.key.key == SDLK_RIGHT) 
+                if (player_can_run) 
                 {
-                    player_x += 10;
-                    playerRect = {player_x,player_y,120,120 };
+                    if (_event.key.key == SDLK_RIGHT)
+                    {
+                        player_x += player_step;
+                        playerRect = { player_x,player_y,120,120 };
+                        player_can_run = false;
+                        return true;
+                    }
+                    if (_event.key.key == SDLK_LEFT)
+                    {
+                        player_x -= player_step;
+                        playerRect = { player_x, player_y,120,120 };
+                        player_can_run = false;
+                        return true;
+                    }
+                    if (_event.key.key == SDLK_UP)
+                    {
+                        player_y -= player_step;
+                        playerRect = { player_x, player_y, 120,120 };
+                        player_can_run = false;
+                        return true;
+                    }
+                    if (_event.key.key == SDLK_DOWN)
+                    {
+                        player_y += player_step;
+                        playerRect = { player_x, player_y, 120, 120 };
+                        player_can_run = false;
+                        return true;
+                    }
+                }
+                break;
+            case SDL_EVENT_KEY_UP:
+                if (_event.key.key == SDLK_RIGHT)
+                {
+                    player_can_run = true;
                     return true;
                 }
-                if (_event.key.key == SDLK_LEFT) 
+                if (_event.key.key == SDLK_LEFT)
                 {
-                    player_x -= 10;
-                    playerRect = {player_x, player_y,120,120};
+                    player_can_run = true;
                     return true;
                 }
-                if (_event.key.key == SDLK_UP) 
+                if (_event.key.key == SDLK_UP)
                 {
-                    player_y -= 10;
-                    playerRect = { player_x, player_y, 120,120 };
+                    player_can_run = true;
                     return true;
                 }
-                if (_event.key.key == SDLK_DOWN) 
+                if (_event.key.key == SDLK_DOWN)
                 {
-                    player_y += 10;
-                    playerRect = {player_x, player_y, 120, 120};
+                    player_can_run = true;
                     return true;
                 }
                 break;
