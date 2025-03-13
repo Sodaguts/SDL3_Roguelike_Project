@@ -94,9 +94,13 @@ list(APPEND LIBS SDL3::SDL3)
 #MESSAGE(STATUS "SDL_mixer TIME: ${DELTASDL_mixer}s")
 ENDIF()
 
-file(GLOB sources *.cpp)
 
-target_sources(roguework PRIVATE ${sources})
+target_include_directories(roguework PRIVATE "headers/")
+
+
+file(GLOB sources "src/*.cpp")
+
+target_sources(roguework PRIVATE ${sources} "main.cpp")
 target_link_libraries(roguework PRIVATE ${LIBS})
 
 # add images

@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <string>
 
+#include "headers/Player.h"
+
 
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window *window = NULL;
@@ -49,6 +51,8 @@ public:
         test_texture = NULL;
         g_isRunning = true;
 
+        Player* p_test_player = new Player();
+
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
         {
             printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -64,6 +68,8 @@ public:
                 g_surface = SDL_GetWindowSurface(g_window);
             }
         }
+
+        delete p_test_player;
 
     };
 
