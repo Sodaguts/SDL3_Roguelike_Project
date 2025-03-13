@@ -13,3 +13,7 @@ Play as the navigator, a contractor tasked with exploring and mapping out "The l
 - Collisions []
 - UI implementation []
 - Game Loop implementation (player lose/win states) []
+- Art []
+  - player sprite [x]
+  - enemy sprite []
+  - tile sprite [x]
