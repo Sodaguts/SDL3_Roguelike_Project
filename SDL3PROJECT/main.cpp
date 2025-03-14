@@ -8,6 +8,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
+#include <ctime>
 #include <string>
 
 #include "headers/Player.h"
@@ -33,9 +34,9 @@ class Game {
 public:
     Game()
     {
-        init();     
+        init();
     };
-    ~Game() 
+    ~Game()
     {
         SDL_DestroySurface(g_surface);
         SDL_DestroyRenderer(g_renderer);
@@ -43,7 +44,7 @@ public:
         SDL_Quit();
     }
 
-    void init() 
+    void init()
     {
         g_window = NULL;
         g_surface = NULL;
@@ -73,7 +74,7 @@ public:
 
     };
 
-    void g_loop() 
+    void g_loop()
     {
         SDL_Event g_event;
 
@@ -82,17 +83,18 @@ public:
         SDL_Surface* sp_test = loadMediaBMP("TEST_SPRITE.bmp");
         SDL_Surface* sp_tile = loadMediaBMP("tile_walkable_a.bmp");
         SDL_Surface* sp_player = loadMediaBMP("player_a.bmp");
+        SDL_Surface* sp_wall = loadMediaBMP("tile_wall_a.bmp");
 
-        SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
+        SDL_Rect stretchRect = { 0,0,SCREEN_WIDTH, SCREEN_HEIGHT };
         SDL_Rect tileRect = { 0,0,120,120 };
 
 
-        while (g_isRunning) 
+        while (g_isRunning)
         {
-            
+
 
             SDL_PollEvent(&g_event);
-            g_isRunning = handleGameScreen(current_screen,g_event);
+            g_isRunning = handleGameScreen(current_screen, g_event);
             //SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0x00);
             //SDL_RenderClear(renderer);
 
@@ -104,21 +106,7 @@ public:
             }
             else
             {
-                int tileX = 0;
-                int tileY = 0;
-                for (int i = 0; i < 10; i++) 
-                {
-                    
-                    tileX = 0;
-                    for (int j = 0; j < 10; j++) 
-                    {
-                        
-                        tileRect = {tileX,tileY,120,120};
-                        SDL_BlitSurfaceScaled(sp_tile, NULL, g_surface, &tileRect, SDL_SCALEMODE_NEAREST);
-                        tileX += 120;
-                    }
-                    tileY += 120;
-                }
+                generateLevel(tileRect, sp_tile, sp_wall);
                 SDL_BlitSurfaceScaled(sp_player, NULL, g_surface, &playerRect, SDL_SCALEMODE_NEAREST);
             }
             SDL_UpdateWindowSurface(g_window);
@@ -145,119 +133,153 @@ private:
 
     SDL_Rect playerRect = { player_x,player_y,120,120 };
 
-    bool handleGameScreen(game_screen _screen, SDL_Event _event) 
+    bool handleGameScreen(game_screen _screen, SDL_Event _event)
     {
         bool isRunning = true;
-        switch (_screen) 
+        switch (_screen)
         {
-            case TITLE:
-                isRunning = doTitle(_event);
-                break;
-            case GAMEPLAY:
-                isRunning = doGameplay(_event);
-                break;
-            case END:
-                // this is like gameover stuff 
-                break;
+        case TITLE:
+            isRunning = doTitle(_event);
+            break;
+        case GAMEPLAY:
+            isRunning = doGameplay(_event);
+            break;
+        case END:
+            // this is like gameover stuff 
+            break;
         }
         return isRunning;
     }
 
-    bool doTitle(SDL_Event _event) 
+    bool doTitle(SDL_Event _event)
     {
         player_x = 0;
         player_y = 0;
-        playerRect = {player_x,player_y,120,120};
-        switch (_event.type) 
+        playerRect = { player_x,player_y,120,120 };
+        switch (_event.type)
         {
-            case SDL_EVENT_KEY_DOWN:
-                if (_event.key.key == SDLK_ESCAPE) 
-                {
-                    return false;
-                }
-                else if (_event.key.key == SDLK_SPACE) 
-                {
-                    current_screen = GAMEPLAY;
-                    return true;
-                }
-                // continue to next game screen
-                break;
-            case SDL_EVENT_QUIT:
+        case SDL_EVENT_KEY_DOWN:
+            if (_event.key.key == SDLK_ESCAPE)
+            {
                 return false;
-                break;
+            }
+            else if (_event.key.key == SDLK_SPACE)
+            {
+                current_screen = GAMEPLAY;
+                return true;
+            }
+            // continue to next game screen
+            break;
+        case SDL_EVENT_QUIT:
+            return false;
+            break;
         }
         return true;
     }
 
-    bool doGameplay(SDL_Event _event) 
+    bool doGameplay(SDL_Event _event)
     {
-        switch (_event.type) 
+        switch (_event.type)
         {
-            case SDL_EVENT_KEY_DOWN:
-                if (_event.key.key == SDLK_ESCAPE) 
-                {
-                    current_screen = TITLE;
-                    return true;
-                }
-                if (player_can_run) 
-                {
-                    if (_event.key.key == SDLK_RIGHT)
-                    {
-                        player_x += player_step;
-                        playerRect = { player_x,player_y,120,120 };
-                        player_can_run = false;
-                        return true;
-                    }
-                    if (_event.key.key == SDLK_LEFT)
-                    {
-                        player_x -= player_step;
-                        playerRect = { player_x, player_y,120,120 };
-                        player_can_run = false;
-                        return true;
-                    }
-                    if (_event.key.key == SDLK_UP)
-                    {
-                        player_y -= player_step;
-                        playerRect = { player_x, player_y, 120,120 };
-                        player_can_run = false;
-                        return true;
-                    }
-                    if (_event.key.key == SDLK_DOWN)
-                    {
-                        player_y += player_step;
-                        playerRect = { player_x, player_y, 120, 120 };
-                        player_can_run = false;
-                        return true;
-                    }
-                }
-                break;
-            case SDL_EVENT_KEY_UP:
+        case SDL_EVENT_KEY_DOWN:
+            if (_event.key.key == SDLK_ESCAPE)
+            {
+                current_screen = TITLE;
+                return true;
+            }
+            if (player_can_run)
+            {
                 if (_event.key.key == SDLK_RIGHT)
                 {
-                    player_can_run = true;
+                    player_x += player_step;
+                    playerRect = { player_x,player_y,120,120 };
+                    player_can_run = false;
                     return true;
                 }
                 if (_event.key.key == SDLK_LEFT)
                 {
-                    player_can_run = true;
+                    player_x -= player_step;
+                    playerRect = { player_x, player_y,120,120 };
+                    player_can_run = false;
                     return true;
                 }
                 if (_event.key.key == SDLK_UP)
                 {
-                    player_can_run = true;
+                    player_y -= player_step;
+                    playerRect = { player_x, player_y, 120,120 };
+                    player_can_run = false;
                     return true;
                 }
                 if (_event.key.key == SDLK_DOWN)
                 {
-                    player_can_run = true;
+                    player_y += player_step;
+                    playerRect = { player_x, player_y, 120, 120 };
+                    player_can_run = false;
                     return true;
                 }
-                break;
-            case SDL_EVENT_QUIT:
-                return false;
-                break;
+            }
+            break;
+        case SDL_EVENT_KEY_UP:
+            if (_event.key.key == SDLK_RIGHT)
+            {
+                player_can_run = true;
+                return true;
+            }
+            if (_event.key.key == SDLK_LEFT)
+            {
+                player_can_run = true;
+                return true;
+            }
+            if (_event.key.key == SDLK_UP)
+            {
+                player_can_run = true;
+                return true;
+            }
+            if (_event.key.key == SDLK_DOWN)
+            {
+                player_can_run = true;
+                return true;
+            }
+            break;
+        case SDL_EVENT_QUIT:
+            return false;
+            break;
         }
         return true;
+    }
+
+    void generateLevel(SDL_Rect tile_rect, SDL_Surface* sp_tile, SDL_Surface* sp_wall)
+    {
+        int tileX = 0;
+        int tileY = 0;
+        for (int i = 0; i < 10; i++)
+        {
+
+            tileX = 0;
+            for (int j = 0; j < 10; j++)
+            {
+
+                tile_rect = { tileX,tileY,120,120 };
+                int wall_or_tile = flipCoin();
+                if (wall_or_tile >= 1) 
+                {
+                    SDL_BlitSurfaceScaled(sp_tile, NULL, g_surface, &tile_rect, SDL_SCALEMODE_NEAREST);
+                }
+                else 
+                {
+                    SDL_BlitSurfaceScaled(sp_wall, NULL, g_surface, &tile_rect, SDL_SCALEMODE_NEAREST);
+                }
+                tileX += 120;
+            }
+            tileY += 120;
+        }
+    }
+
+    int flipCoin() 
+    {
+        srand(1);
+        int coin_side = 0;
+        return (rand()%5)+1;
     }
 
     SDL_Surface* loadMediaBMP(std::string file_path) 
