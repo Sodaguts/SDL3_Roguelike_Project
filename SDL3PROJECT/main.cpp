@@ -12,6 +12,7 @@
 #include <string>
 
 #include "headers/Player.h"
+#include "headers/Tile.h"
 
 
 /* We will use this renderer to draw into this window every frame. */
@@ -20,6 +21,8 @@ static SDL_Renderer *renderer = NULL;
 
 const int SCREEN_WIDTH = 1280*2;
 const int SCREEN_HEIGHT = 960*2;
+
+Tile tiles[100];
 
 typedef enum GAME_SCREENS 
 {
@@ -79,7 +82,7 @@ public:
         SDL_Event g_event;
 
         //load images
-        SDL_Surface* sp_title = loadMediaBMP("title_screen_b.bmp");
+        SDL_Surface* sp_title = loadMediaBMP("rogueworkaheadthumb_compA.bmp");
         SDL_Surface* sp_test = loadMediaBMP("TEST_SPRITE.bmp");
         SDL_Surface* sp_tile = loadMediaBMP("tile_walkable_a.bmp");
         SDL_Surface* sp_player = loadMediaBMP("player_a.bmp");
@@ -88,10 +91,33 @@ public:
         SDL_Rect stretchRect = { 0,0,SCREEN_WIDTH, SCREEN_HEIGHT };
         SDL_Rect tileRect = { 0,0,120,120 };
 
+        // generate grid for drawing later
+        int tileX = 0;
+        int tileY = 0;
+        int count = 0;
+        for (int i = 0; i < 10; i++) 
+        {
+            tileX = 0;
+            for (int j = 0; j < 10; j++) 
+            {
+                tiles[count].setRectPos(tileX, tileY);
+                if (j % 2 == 0) 
+                {
+                    tiles[count].setSprite(sp_tile);
+                }
+                else 
+                {
+                    tiles[count].setSprite(sp_wall);
+                }
+                tileX += 120;
+                count++;
+            }
+            tileY += 120;
+        }
+
 
         while (g_isRunning)
         {
-
 
             SDL_PollEvent(&g_event);
             g_isRunning = handleGameScreen(current_screen, g_event);
@@ -252,26 +278,9 @@ private:
     {
         int tileX = 0;
         int tileY = 0;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
-
-            tileX = 0;
-            for (int j = 0; j < 10; j++)
-            {
-
-                tile_rect = { tileX,tileY,120,120 };
-                int wall_or_tile = flipCoin();
-                if (wall_or_tile >= 1) 
-                {
-                    SDL_BlitSurfaceScaled(sp_tile, NULL, g_surface, &tile_rect, SDL_SCALEMODE_NEAREST);
-                }
-                else 
-                {
-                    SDL_BlitSurfaceScaled(sp_wall, NULL, g_surface, &tile_rect, SDL_SCALEMODE_NEAREST);
-                }
-                tileX += 120;
-            }
-            tileY += 120;
+            SDL_BlitSurfaceScaled(tiles[i].getSprite(), NULL, g_surface, &tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
         }
     }
 
