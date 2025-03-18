@@ -11,6 +11,14 @@ Tile::Tile(int _x, int _y)
 {
 	setX(_x);
 	setY(_y);
+	mp_sprite = nullptr;
+}
+
+Tile::Tile(int _x, int _y, Type _type) 
+{
+	setX(_x);
+	setY(_y);
+	mp_sprite = nullptr;
 }
 
 Tile::~Tile()

@@ -9,7 +9,9 @@
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
 #include <ctime>
+#include <iostream>
 #include <string>
+#include <unordered_map>
 
 #include "headers/Player.h"
 #include "headers/Tile.h"
@@ -23,6 +25,7 @@ const int SCREEN_WIDTH = 1280*2;
 const int SCREEN_HEIGHT = 960*2;
 
 Tile tiles[100];
+int tileCount = 100;
 
 typedef enum GAME_SCREENS 
 {
@@ -100,20 +103,25 @@ public:
             tileX = 0;
             for (int j = 0; j < 10; j++) 
             {
+                //tiles[count].setRectPos(tileX, tileY);
                 tiles[count].setRectPos(tileX, tileY);
-                if (j % 2 == 0) 
+                if ((j % 2 == 0 && i % 3 == 0)) 
                 {
-                    tiles[count].setSprite(sp_tile);
+                    tiles[count].setSprite(sp_wall);
+                    tiles[count].setType(Type::WALL);
                 }
                 else 
                 {
-                    tiles[count].setSprite(sp_wall);
+                    tiles[count].setSprite(sp_tile);
+                    tiles[count].setType(Type::WALKABLE);
                 }
                 tileX += 120;
                 count++;
             }
             tileY += 120;
         }
+        tiles[0].setSprite(sp_tile);
+        tiles[0].setType(Type::WALKABLE);
 
 
         while (g_isRunning)
@@ -218,28 +226,56 @@ private:
                 if (_event.key.key == SDLK_RIGHT)
                 {
                     player_x += player_step;
-                    playerRect = { player_x,player_y,120,120 };
+                    if (canMoveToPosition(player_x, player_y)) 
+                    {
+                        playerRect = { player_x,player_y,120,120 };
+                    }
+                    else 
+                    {
+                        player_x -= player_step;
+                    }
                     player_can_run = false;
                     return true;
                 }
                 if (_event.key.key == SDLK_LEFT)
                 {
                     player_x -= player_step;
-                    playerRect = { player_x, player_y,120,120 };
+                    if (canMoveToPosition(player_x,player_y)) 
+                    {
+                        playerRect = { player_x, player_y,120,120 };
+                    }
+                    else 
+                    {
+                        player_x += player_step;
+                    }
                     player_can_run = false;
                     return true;
                 }
                 if (_event.key.key == SDLK_UP)
                 {
                     player_y -= player_step;
-                    playerRect = { player_x, player_y, 120,120 };
+                    if (canMoveToPosition(player_x, player_y)) 
+                    {
+                        playerRect = { player_x, player_y, 120,120 };
+                    }
+                    else 
+                    {
+                        player_y += player_step;
+                    }
                     player_can_run = false;
                     return true;
                 }
                 if (_event.key.key == SDLK_DOWN)
                 {
                     player_y += player_step;
-                    playerRect = { player_x, player_y, 120, 120 };
+                    if (canMoveToPosition(player_x, player_y))
+                    {
+                        playerRect = { player_x, player_y, 120,120 };
+                    }
+                    else
+                    {
+                        player_y -= player_step;
+                    }
                     player_can_run = false;
                     return true;
                 }
@@ -282,6 +318,23 @@ private:
         {
             SDL_BlitSurfaceScaled(tiles[i].getSprite(), NULL, g_surface, &tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
         }
+    }
+
+    bool canMoveToPosition(int x, int y) 
+    {
+        std::cout << x << "," << y << std::endl;
+        for (int i = 0; i < tileCount; i++) 
+        {
+            if (tiles[i].getType() == Type::WALL)
+            {
+                if ((tiles[i].getX() == x) && (tiles[i].getY() == y)) // account for player offset
+                {
+                    std::cout << tiles[i].getX() << "," << tiles[i].getY() << std::endl;
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     int flipCoin() 
