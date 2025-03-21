@@ -4,7 +4,7 @@
 class Player 
 {
 public:
-	Player() { printf("REAL\n"); };
+	Player() {};
 	void handlePlayerInput();
 private:
 };

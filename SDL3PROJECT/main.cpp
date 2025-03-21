@@ -13,13 +13,14 @@
 #include <string>
 #include <unordered_map>
 
-#include "headers/Player.h"
-#include "headers/Tile.h"
+#include "headers/Game.h"
 
 
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
+
+Game* p_game = Game::getInstance();
 
 const int SCREEN_WIDTH = 1280*2;
 const int SCREEN_HEIGHT = 960*2;
@@ -36,13 +37,13 @@ typedef enum GAME_SCREENS
 
 game_screen current_screen = TITLE;
 
-class Game {
+class sGame {
 public:
-    Game()
+    sGame()
     {
         init();
     };
-    ~Game()
+    ~sGame()
     {
         SDL_DestroySurface(g_surface);
         SDL_DestroyRenderer(g_renderer);
@@ -360,7 +361,7 @@ private:
 
 int main(int argc, char* args[])
 {
-    Game g_main;
+    sGame g_main;
     g_main.g_loop();
     return 1;
 }
