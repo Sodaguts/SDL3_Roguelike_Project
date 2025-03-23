@@ -28,14 +28,14 @@ const int SCREEN_HEIGHT = 960*2;
 Tile tiles[100];
 int tileCount = 100;
 
-typedef enum GAME_SCREENS 
-{
-    TITLE,
-    GAMEPLAY,
-    END,
-}game_screen;
+//typedef enum GAME_SCREENS 
+//{
+//    TITLE,
+//    GAMEPLAY,
+//    END,
+//}game_screen;
 
-game_screen current_screen = TITLE;
+//game_screen current_screen = TITLE;
 
 class sGame {
 public:
@@ -129,24 +129,24 @@ public:
         {
 
             SDL_PollEvent(&g_event);
-            g_isRunning = handleGameScreen(current_screen, g_event);
+            //g_isRunning = handleGameScreen(current_screen, g_event);
             //SDL_SetRenderDrawColor(g_renderer, 0x00, 0x00, 0x00, 0x00);
             //SDL_RenderClear(renderer);
 
             // render textures here
-            SDL_FillSurfaceRect(g_surface, NULL, SDL_MapSurfaceRGB(g_surface, 0x00, 0x00, 0x00));
-            if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
-            {
-                SDL_BlitSurfaceScaled(sp_title, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
-            }
-            else
-            {
-                generateLevel(tileRect, sp_tile, sp_wall);
-                SDL_BlitSurfaceScaled(sp_player, NULL, g_surface, &playerRect, SDL_SCALEMODE_NEAREST);
-            }
-            SDL_UpdateWindowSurface(g_window);
+            //SDL_FillSurfaceRect(g_surface, NULL, SDL_MapSurfaceRGB(g_surface, 0x00, 0x00, 0x00));
+            //if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
+            //{
+            //    SDL_BlitSurfaceScaled(sp_title, NULL, g_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
+            //}
+            //else
+            //{
+            //    generateLevel(tileRect, sp_tile, sp_wall);
+            //    SDL_BlitSurfaceScaled(sp_player, NULL, g_surface, &playerRect, SDL_SCALEMODE_NEAREST);
+            //}
+            //SDL_UpdateWindowSurface(g_window);
 
-            //SDL_RenderPresent(renderer);
+            SDL_RenderPresent(renderer);
         }
 
         SDL_DestroySurface(sp_title);
@@ -168,23 +168,23 @@ private:
 
     SDL_Rect playerRect = { player_x,player_y,120,120 };
 
-    bool handleGameScreen(game_screen _screen, SDL_Event _event)
-    {
-        bool isRunning = true;
-        switch (_screen)
-        {
-        case TITLE:
-            isRunning = doTitle(_event);
-            break;
-        case GAMEPLAY:
-            isRunning = doGameplay(_event);
-            break;
-        case END:
-            // this is like gameover stuff 
-            break;
-        }
-        return isRunning;
-    }
+    //bool handleGameScreen(game_screen _screen, SDL_Event _event)
+    //{
+    //    bool isRunning = true;
+    //    switch (_screen)
+    //    {
+    //    case TITLE:
+    //        isRunning = doTitle(_event);
+    //        break;
+    //    case GAMEPLAY:
+    //        isRunning = doGameplay(_event);
+    //        break;
+    //    case END:
+    //        // this is like gameover stuff 
+    //        break;
+    //    }
+    //    return isRunning;
+    //}
 
     bool doTitle(SDL_Event _event)
     {
@@ -200,7 +200,7 @@ private:
             }
             else if (_event.key.key == SDLK_SPACE)
             {
-                current_screen = GAMEPLAY;
+                //current_screen = GAMEPLAY;
                 return true;
             }
             // continue to next game screen
@@ -219,7 +219,7 @@ private:
         case SDL_EVENT_KEY_DOWN:
             if (_event.key.key == SDLK_ESCAPE)
             {
-                current_screen = TITLE;
+                //current_screen = TITLE;
                 return true;
             }
             if (player_can_run)
@@ -361,7 +361,9 @@ private:
 
 int main(int argc, char* args[])
 {
-    sGame g_main;
-    g_main.g_loop();
+    //sGame g_main;
+    //p_game->init(SCREEN_WIDTH, SCREEN_HEIGHT);
+    //g_main.g_loop();
+    p_game->update();
     return 1;
 }
