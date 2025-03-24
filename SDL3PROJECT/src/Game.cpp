@@ -3,6 +3,7 @@ Game* Game::g_instance = nullptr;
 
 //static SDL_Renderer* renderer = NULL;
 
+
 Game::Game() 
 {
 	init(SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -21,40 +22,16 @@ void Game::g_loop()
 
 	SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
 	SDL_Rect tileRect = {0, 0, 120, 120};
-	SDL_Rect playerRect = {0,0, 120,120};
+	//SDL_Rect playerRect = {0,0, 120,120};
 
-	int tileX = 0;
-	int tileY = 0;
-	int count = 0;
-	for(int i = 0; i < 10; i++)
-	{
-		tileX = 0;
-		for (int j = 0; j < 10; j++) 
-		{
-			tiles[count].setRectPos(tileX, tileY);
-			if ((j % 2 == 0 && i % 3 == 0))
-			{
-				tiles[count].setSprite(sp_wall);
-				tiles[count].setType(Type::WALL);
-			}
-			else
-			{
-				tiles[count].setSprite(sp_tile);
-				tiles[count].setType(Type::WALKABLE);
-			}
-			tileX += 120;
-			count++;
-		}
-		tileY += 120;
-	}
-	tiles[0].setSprite(sp_tile);
-	tiles[0].setType(Type::WALKABLE);
+	initGrid(sp_wall, sp_tile);
 
 	// main game loop
 	while (m_isRunning) 
 	{
 		SDL_PollEvent(&g_event);
 		m_isRunning = handleGameScreen(current_screen, g_event);
+		m_player.handlePlayerInput(g_event);
 		SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
 		//SDL_RenderClear(m_renderer);
 
@@ -66,9 +43,10 @@ void Game::g_loop()
 		}
 		else
 		{
+			drawGrid();
 		    //generateLevel(tileRect, sp_tile, sp_wall);
-		    //SDL_BlitSurfaceScaled(sp_player, NULL, m_surface, &playerRect, SDL_SCALEMODE_NEAREST);
-			SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00)); //TEMP
+		    SDL_BlitSurfaceScaled(sp_player, NULL, m_surface, &m_player.getRect(), SDL_SCALEMODE_NEAREST);
+			//SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00)); //TEMP
 		}
 		SDL_UpdateWindowSurface(m_window);
 
@@ -87,6 +65,7 @@ bool Game::handleGameScreen(GameScreens _screen, SDL_Event _event)
 			isRunning = doTitle(_event);
 			break;
 		case GAMEPLAY:
+			isRunning = doGameplay(_event);
 			break;
 		case END:
 			break;
@@ -105,6 +84,7 @@ bool Game::doTitle(SDL_Event _event)
 		}
 		else if (_event.key.key == SDLK_SPACE)
 		{
+			current_screen = GAMEPLAY;
 			return true;
 		}
 		break;
@@ -117,12 +97,22 @@ bool Game::doTitle(SDL_Event _event)
 
 bool Game::doGameplay(SDL_Event _event)
 {
-	return false;
+	switch (_event.type) 
+	{
+		case SDL_EVENT_QUIT:
+			return false;
+			break;
+		case SDL_EVENT_KEY_DOWN:
+			if (_event.key.key == SDLK_ESCAPE) 
+			{
+				current_screen = TITLE;
+				return true;
+			}
+			break;
+	}
+	return true;
 }
 
-void Game::generateLevel()
-{
-}
 
 Game* Game::getInstance() 
 {
@@ -164,4 +154,44 @@ void Game::update()
 
 void Game::draw()
 {
+}
+
+void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile) 
+{
+	int tileX = 0;
+	int tileY = 0;
+	int count = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		tileX = 0;
+		for (int j = 0; j < 10; j++)
+		{
+			tiles[count].setRectPos(tileX, tileY);
+			if ((j % 2 == 0 && i % 3 == 0))
+			{
+				tiles[count].setSprite(sp_wall);
+				tiles[count].setType(TileType::WALL);
+			}
+			else
+			{
+				tiles[count].setSprite(sp_tile);
+				tiles[count].setType(TileType::WALKABLE);
+			}
+			tileX += 120;
+			count++;
+		}
+		tileY += 120;
+	}
+	tiles[0].setSprite(sp_tile);
+	tiles[0].setType(TileType::WALKABLE);
+}
+
+void Game::drawGrid() 
+{
+	int tileX = 0;
+	int tileY = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		SDL_BlitSurfaceScaled(tiles[i].getSprite(), NULL, m_surface, &tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
+	}
 }

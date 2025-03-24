@@ -1,4 +1,4 @@
-#include "Tile.h"
+#include "../headers/Tile.h"
 
 Tile::Tile()
 {
@@ -14,7 +14,7 @@ Tile::Tile(int _x, int _y)
 	mp_sprite = nullptr;
 }
 
-Tile::Tile(int _x, int _y, Type _type) 
+Tile::Tile(int _x, int _y, TileType _type) 
 {
 	setX(_x);
 	setY(_y);

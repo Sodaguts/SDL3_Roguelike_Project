@@ -1,18 +1,18 @@
 #include <cstdio>
 #include <SDL3/SDL.h>
 
-enum Type 
+typedef enum TileType 
 {
-	WALKABLE,
+	WALKABLE=0,
 	WALL,
-};
+}tileType;
 
 class Tile 
 {
 public:
 	Tile();
 	Tile(int _x, int _y);
-	Tile(int _x, int _y, Type _type);
+	Tile(int _x, int _y, TileType _type);
 	~Tile();
 
 	int getX() { return x; };
@@ -23,8 +23,8 @@ public:
 	void setRectPos(int x, int y) { m_rect = { x,y,120,120 }; setX(x); setY(y); };
 	SDL_Rect getRect() { return m_rect; };
 	SDL_Surface* getSprite() { return mp_sprite; };
-	Type getType() { return m_type; };
-	void setType(Type type) { m_type = type; };
+	TileType getType() { return m_type; };
+	void setType(TileType type) { m_type = type; };
 
 
 private:
@@ -32,5 +32,5 @@ private:
 	int y;
 	SDL_Surface* mp_sprite; // sprite
 	SDL_Rect m_rect;
-	Type m_type;
+	TileType m_type;
 };
