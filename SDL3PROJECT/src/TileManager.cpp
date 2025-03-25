@@ -2,29 +2,9 @@
 
 TileManager::TileManager() 
 {
-	std::string tileFilePath = "tile_walkable_a.bmp";
-	mps_tile = SDL_LoadBMP(tileFilePath.c_str());
-	if (mps_tile == NULL) 
-	{
-		printf("ERROR: UNABLE TO LOAD FILE! %s\n",tileFilePath);
-	}
-	else 
-	{
-		printf("Loaded image in TileManager.cpp successfully\n");
-	}
-	std::string wallFilePath = "tile_wall_a.bmp";
-	mps_wall = SDL_LoadBMP(wallFilePath.c_str());
-	if (mps_wall == NULL)
-	{
-		printf("ERROR: UNABLE TO LOAD FILE! %s\n", wallFilePath);
-	}
-	else 
-	{
-		printf("Loaded image in TileManager.cpp successfully\n");
-	}
-
-	msp_something = SDL_LoadBMP(tileFilePath.c_str());
-
+	msp_tile = loadMediaBMP("tile_walkable_a.bmp");
+	msp_tile = loadMediaBMP("tile_wall_a.bmp");
+	msp_something = loadMediaBMP("tile_wall_a.bmp");
 	//initGrid();
 }
 
@@ -33,13 +13,17 @@ void TileManager::initGrid(SDL_Surface* spr_wall, SDL_Surface* spr_tile)
 	int tileX = 0;
 	int tileY = 0;
 	int count = 0;
-	for (int i = 0; i < 10; i++)
+
+	int randMax = 10;
+	int randMin = 2;
+	for (int i = 0; i < 20; i++)
 	{
 		tileX = 0;
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 20; j++)
 		{
+			int randNum = (rand() % (randMax - randMin + 1)) + randMin;
 			tiles[count].setRectPos(tileX, tileY);
-			if ((j % 2 == 0 && i % 3 == 0))
+			if (randNum >= 8)
 			{
 				tiles[count].setSprite(spr_wall);
 				tiles[count].setType(TileType::WALL);

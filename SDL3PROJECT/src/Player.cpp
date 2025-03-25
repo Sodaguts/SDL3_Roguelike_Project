@@ -68,7 +68,4 @@ void Player::handlePlayerInput(SDL_Event _event)
 	}
 }
 
-bool Player::canMoveToPosition(int x, int y)
-{
-	return false;
-}
+

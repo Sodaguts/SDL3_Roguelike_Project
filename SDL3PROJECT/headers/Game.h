@@ -60,7 +60,7 @@ private:
 	Tile tiles[100];
 	int tileCount = 100;
 
-	TileManager mp_tileManager;
+	TileManager m_tileManager;
 
 	SDL_Surface* loadMediaBMP(std::string file_path) 
 	{

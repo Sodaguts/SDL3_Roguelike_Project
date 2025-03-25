@@ -36,5 +36,6 @@ private:
 
 	SDL_Surface* mp_sprite;
 
-	bool canMoveToPosition(int x, int y);
+	TileManager* mp_tileManager;
+
 };
