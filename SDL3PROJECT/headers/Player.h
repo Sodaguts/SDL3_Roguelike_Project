@@ -1,6 +1,8 @@
 #include <cstdio>
 #include <SDL3/SDL.h>
 
+#include "../headers/TileManager.h"
+
 class Player 
 {
 public:

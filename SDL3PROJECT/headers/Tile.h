@@ -26,6 +26,15 @@ public:
 	TileType getType() { return m_type; };
 	void setType(TileType type) { m_type = type; };
 
+	bool isSpriteSet()
+	{
+		if (mp_sprite == nullptr)
+		{
+			return false;
+		}
+		return true;
+	};
+
 
 private:
 	int x;

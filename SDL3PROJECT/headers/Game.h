@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "../headers/Player.h"
-#include "../headers/TileManager.h"
+//#include "../headers/TileManager.h"
 
 
 class Game 
@@ -48,7 +48,7 @@ private:
 	// maybe make these their own classes or something idk
 	bool doTitle(SDL_Event _event);
 	bool doGameplay(SDL_Event _event);
-	bool canMoveToPosition() {}; // player class function  (will need to be moved out of here somehow soon)
+	//bool canMoveToPosition() {}; // player class function  (will need to be moved out of here somehow soon)
 
 	//put this into a grid manager or something later
 	void initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile);
@@ -59,6 +59,8 @@ private:
 
 	Tile tiles[100];
 	int tileCount = 100;
+
+	TileManager mp_tileManager;
 
 	SDL_Surface* loadMediaBMP(std::string file_path) 
 	{

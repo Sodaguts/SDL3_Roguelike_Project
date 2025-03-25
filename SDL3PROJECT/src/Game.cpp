@@ -3,6 +3,30 @@ Game* Game::g_instance = nullptr;
 
 //static SDL_Renderer* renderer = NULL;
 
+void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
+{
+	m_window = NULL;
+	m_surface = NULL;
+	m_renderer = NULL;
+	m_isRunning = true;
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+	}
+	else
+	{
+		if (!SDL_CreateWindowAndRenderer("ROGUEWORK AHEAD", SCREEN_WIDTH, SCREEN_HEIGHT, 0, &m_window, &m_renderer))
+		{
+			printf("SDL could not initialize window and renderer! SDL_Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			m_surface = SDL_GetWindowSurface(m_window);
+		}
+	}
+
+}
 
 Game::Game() 
 {
@@ -24,7 +48,9 @@ void Game::g_loop()
 	SDL_Rect tileRect = {0, 0, 120, 120};
 	//SDL_Rect playerRect = {0,0, 120,120};
 
+
 	initGrid(sp_wall, sp_tile);
+	mp_tileManager.initGrid(sp_wall, sp_tile);
 
 	// main game loop
 	while (m_isRunning) 
@@ -123,29 +149,6 @@ Game* Game::getInstance()
 	return g_instance;
 }
 
-void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
-{
-	m_window = NULL;
-	m_surface = NULL;
-	m_renderer = NULL;
-	m_isRunning = true;
-
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
-	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-	}
-	else 
-	{
-		if (!SDL_CreateWindowAndRenderer("ROGUEWORK AHEAD", SCREEN_WIDTH, SCREEN_HEIGHT, 0, &m_window, &m_renderer))
-		{
-			printf("SDL could not initialize window and renderer! SDL_Error: %s\n", SDL_GetError());
-		}
-		else 
-		{
-			m_surface = SDL_GetWindowSurface(m_window);
-		}
-	}
-}
 
 void Game::update()
 {
@@ -188,10 +191,18 @@ void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile)
 
 void Game::drawGrid() 
 {
+	SDL_Rect someRect = { 0,0,120,120 };
+	SDL_BlitSurfaceScaled(mp_tileManager.getSomething(), NULL, m_surface, &someRect, SDL_SCALEMODE_NEAREST);
 	int tileX = 0;
 	int tileY = 0;
 	for (int i = 0; i < 100; i++)
 	{
-		SDL_BlitSurfaceScaled(tiles[i].getSprite(), NULL, m_surface, &tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
+		//printf("Tile pos x: %s\n", mp_tileManager->getTile(i).getX());
+		if (!mp_tileManager.getTile(i).isSpriteSet()) 
+		{
+			std::cout << "no sprite found at index: " << i << std::endl;
+		}
+		//SDL_BlitSurfaceScaled(tiles[i].getSprite(), NULL, m_surface, &tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
+		SDL_BlitSurfaceScaled(mp_tileManager.getTile(i).getSprite(), NULL, m_surface, &mp_tileManager.getTile(i).getRect(), SDL_SCALEMODE_NEAREST);
 	}
 }
