@@ -4,6 +4,10 @@ project(SDL3PROJECT)
 add_executable(roguework) # WIN 32 - hide the console like this
 #set_target_properties(roguework PROPERTIES WIN32_EXECUTABLE "TRUE")
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(CPM_DOWNLOAD_VERSION 0.27.2)
 set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
 
