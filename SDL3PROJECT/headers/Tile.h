@@ -22,7 +22,7 @@ public:
 	void setY(int value) { y = value; };
 	void setSprite(SDL_Surface* p_surface) { mp_sprite = p_surface; };
 	void setRectPos(int x, int y) { m_rect = { x,y,120,120 }; setX(x); setY(y); };
-	SDL_Rect getRect() { return m_rect; };
+	SDL_Rect& getRect() { return m_rect; };
 	SDL_Surface* getSprite() { return mp_sprite; };
 	TileType getType() { return m_type; };
 	void setType(TileType type) { m_type = type; };
