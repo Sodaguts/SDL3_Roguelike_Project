@@ -192,8 +192,7 @@ void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile)
 
 void Game::drawGrid() 
 {
-	SDL_Rect someRect = { 0,0,120,120 };
-	SDL_BlitSurfaceScaled(m_tileManager.getSomething(), NULL, m_surface, &someRect, SDL_SCALEMODE_NEAREST);
+	//SDL_BlitSurfaceScaled(m_tileManager.getSomething(), NULL, m_surface, &someRect, SDL_SCALEMODE_NEAREST);
 	int tileX = 0;
 	int tileY = 0;
 	for (int i = 0; i < m_tileManager.getCount(); i++)

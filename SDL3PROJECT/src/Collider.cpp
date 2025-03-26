@@ -1,8 +1,11 @@
 #include "Collider.h"
 
-Collider::Collider(int posX, int posY, int wdith, int height)
+Collider::Collider(int posX, int posY, int width, int height)
 {
-	m_rect = {posX, posY, wdith, height};
+	m_rect.x = posX;
+	m_rect.y = posY;
+	m_rect.w = width;
+	m_rect.h = height;
 }
 
 bool Collider::checkCollision(SDL_Rect other)

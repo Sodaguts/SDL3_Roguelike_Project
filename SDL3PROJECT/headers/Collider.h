@@ -5,7 +5,7 @@
 class Collider 
 {
 public:
-	Collider() { m_rect = {0,0,0,0}; }; 
+	Collider() { m_rect.x = 0; m_rect.y = 0; m_rect.w = 0; m_rect.h = 0; };
 	Collider(int posX, int posY, int length, int width);
 
 	bool checkCollision(SDL_Rect other); 

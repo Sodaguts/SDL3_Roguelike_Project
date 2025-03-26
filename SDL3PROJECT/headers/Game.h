@@ -32,8 +32,8 @@ private:
 
 	GameScreens current_screen = TITLE;
 
-	const int SCREEN_WIDTH = 1280*2;
-	const int SCREEN_HEIGHT = 960*2;
+	const int SCREEN_WIDTH = 1280;
+	const int SCREEN_HEIGHT = 960;
 
 	//move over from main
 	SDL_Window* m_window;
@@ -48,7 +48,6 @@ private:
 	// maybe make these their own classes or something idk
 	bool doTitle(SDL_Event _event);
 	bool doGameplay(SDL_Event _event);
-	//bool canMoveToPosition() {}; // player class function  (will need to be moved out of here somehow soon)
 
 	//put this into a grid manager or something later
 	void initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile);

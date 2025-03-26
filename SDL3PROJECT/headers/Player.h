@@ -2,6 +2,7 @@
 #include <SDL3/SDL.h>
 
 #include "../headers/TileManager.h"
+//#include "../headers/Collider.h"
 
 class Player 
 {
