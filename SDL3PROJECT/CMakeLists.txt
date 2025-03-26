@@ -5,7 +5,7 @@ add_executable(roguework) # WIN 32 - hide the console like this
 #set_target_properties(roguework PROPERTIES WIN32_EXECUTABLE "TRUE")
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 set(CPM_DOWNLOAD_VERSION 0.27.2)
