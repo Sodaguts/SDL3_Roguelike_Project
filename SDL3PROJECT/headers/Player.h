@@ -23,7 +23,7 @@ public:
 
 	int getX() { return m_posX; };
 	int getY() { return m_posY; };
-	SDL_Rect getRect() { return m_rect; };
+	SDL_Rect& getRect() { return m_rect; };
 
 	void setSprite(SDL_Surface* p_sprite) { mp_sprite = p_sprite; };
 

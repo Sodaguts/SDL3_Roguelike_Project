@@ -54,7 +54,7 @@ private:
 		SDL_Surface* p_surface = SDL_LoadBMP(file_path.c_str());
 		if (p_surface == NULL)
 		{
-			printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", file_path, SDL_GetError());
+			printf("ERROR: Unable to load image %s! SDL ERROR: %s\n", file_path.c_str(), SDL_GetError());
 		}
 		else
 		{
