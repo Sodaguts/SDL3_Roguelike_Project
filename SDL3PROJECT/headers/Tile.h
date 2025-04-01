@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <SDL3/SDL.h>
-#include "../headers/Collider.h"
+
 
 typedef enum TileType 
 {

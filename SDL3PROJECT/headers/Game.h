@@ -1,7 +1,8 @@
 #include <SDL3/SDL.h>
 #include <iostream>
 
-#include "../headers/Player.h"
+#include "../headers/GameObject.h"
+#include "../headers/TileManager.h"
 //#include "../headers/TileManager.h"
 
 
@@ -54,7 +55,7 @@ private:
 	void drawGrid();
 
 	//Player shit
-	Player m_player;
+	GameObject m_player;
 
 	Tile tiles[100];
 	int tileCount = 100;
