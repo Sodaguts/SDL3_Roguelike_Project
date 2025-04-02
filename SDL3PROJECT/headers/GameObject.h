@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <SDL3/SDL.h>
+#include "Collider.h"
 
 //#include "../headers/Collider.h"
 
