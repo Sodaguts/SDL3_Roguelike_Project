@@ -15,6 +15,8 @@ void GameObject::update()
 
 void GameObject::handlePlayerInput(SDL_Event _event)
 {
+	m_prevX = m_posX;
+	m_prevY = m_posY;
 	switch (_event.type)
 	{
 	case SDL_EVENT_KEY_DOWN:
@@ -66,6 +68,14 @@ void GameObject::handlePlayerInput(SDL_Event _event)
 		}
 		break;
 	}
+}
+
+void GameObject::setRectPrev()
+{
+	m_posX = m_prevX;
+	m_posY = m_prevY;
+	m_rect.x = m_prevX;
+	m_rect.y = m_prevY;
 }
 
 
