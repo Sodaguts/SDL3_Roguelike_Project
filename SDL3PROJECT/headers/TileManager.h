@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdio>
 #include <string>
 #include "../headers/Tile.h"
@@ -43,6 +45,8 @@ private:
 	
 	int tileCount = 400;
 	bool m_canRegen = true;
+
+	void BFS();
 
 	SDL_Surface* msp_tile;
 	SDL_Surface* msp_wall;

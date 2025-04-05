@@ -54,6 +54,7 @@ private:
 	void initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile);
 	void drawGrid();
 
+
 	//Player shit
 	GameObject m_player;
 

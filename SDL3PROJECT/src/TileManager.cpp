@@ -8,6 +8,13 @@ TileManager::TileManager()
 	//initGrid();
 }
 
+void BFS() 
+{
+	//get a start tile and end tile
+	//find a path from one to the other
+	//any tiles in that path should become path tiles
+}
+
 void TileManager::initGrid(SDL_Surface* spr_wall, SDL_Surface* spr_tile) 
 {
 	int tileX = 0;

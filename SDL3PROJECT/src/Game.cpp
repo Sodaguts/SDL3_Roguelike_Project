@@ -173,6 +173,9 @@ void Game::draw()
 
 void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile) 
 {
+
+	//TODO: add a breath first search from entrance to exit that will always exist
+
 	int tileX = 0;
 	int tileY = 0;
 	int count = 0;
@@ -217,3 +220,4 @@ void Game::drawGrid()
 		SDL_BlitSurfaceScaled(m_tileManager.tiles[i].getSprite(), NULL, m_surface, &m_tileManager.tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
 	}
 }
+
