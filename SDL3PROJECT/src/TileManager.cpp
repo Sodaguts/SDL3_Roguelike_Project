@@ -3,8 +3,9 @@
 TileManager::TileManager() 
 {
 	msp_tile = loadMediaBMP("tile_walkable_a.bmp");
-	msp_tile = loadMediaBMP("tile_wall_a.bmp");
+	msp_wall = loadMediaBMP("tile_wall_a.bmp");
 	msp_something = loadMediaBMP("tile_wall_a.bmp");
+	msp_exit = loadMediaBMP("tile_exit_a.bmp");
 	//initGrid();
 }
 

@@ -7,6 +7,7 @@ typedef enum TileType
 {
 	WALKABLE=0,
 	WALL,
+	EXIT,
 }tileType;
 
 class Tile 

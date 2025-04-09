@@ -50,6 +50,7 @@ private:
 
 	SDL_Surface* msp_tile;
 	SDL_Surface* msp_wall;
+	SDL_Surface* msp_exit;
 
 	SDL_Surface* msp_something;
 

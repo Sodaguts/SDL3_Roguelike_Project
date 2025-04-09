@@ -13,8 +13,7 @@ public:
 
 	static Game* getInstance();
 	void init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT);
-	void update();
-	void draw();
+	void g_loop();
 	void shutdown() {}; // delete g_instance and cleanup other pointers
 
 	Tile getTile(int index) { return tiles[index]; };
@@ -42,8 +41,8 @@ private:
 	SDL_Surface* m_surface;
 
 	bool m_isRunning;
-
-	void g_loop();
+	void update();
+	void draw();
 
 	bool handleGameScreen(GameScreens _screen, SDL_Event _event);
 	// maybe make these their own classes or something idk
@@ -53,6 +52,16 @@ private:
 	//put this into a grid manager or something later
 	void initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile);
 	void drawGrid();
+
+	//load images
+	SDL_Surface* sp_title = loadMediaBMP("rogueworkaheadthumb_compA.bmp");
+	SDL_Surface* sp_test = loadMediaBMP("TEST_SPRITE.bmp");
+	SDL_Surface* sp_tile = loadMediaBMP("tile_walkable_a.bmp");
+	SDL_Surface* sp_player = loadMediaBMP("player_a.bmp");
+	SDL_Surface* sp_wall = loadMediaBMP("tile_wall_a.bmp");
+
+	SDL_Rect stretchRect = { 0,0,SCREEN_WIDTH, SCREEN_HEIGHT };
+	SDL_Rect tileRect = { 0, 0, 120, 120 };
 
 
 	//Player shit

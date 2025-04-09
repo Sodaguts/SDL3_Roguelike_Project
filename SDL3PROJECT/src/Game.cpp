@@ -3,6 +3,8 @@ Game* Game::g_instance = nullptr;
 
 //static SDL_Renderer* renderer = NULL;
 
+
+
 void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
 {
 	m_window = NULL;
@@ -37,18 +39,6 @@ void Game::g_loop()
 {
 	SDL_Event g_event;
 
-	//load images
-	SDL_Surface* sp_title = loadMediaBMP("rogueworkaheadthumb_compA.bmp");
-	SDL_Surface* sp_test = loadMediaBMP("TEST_SPRITE.bmp");
-	SDL_Surface* sp_tile = loadMediaBMP("tile_walkable_a.bmp");
-	SDL_Surface* sp_player = loadMediaBMP("player_a.bmp");
-	SDL_Surface* sp_wall = loadMediaBMP("tile_wall_a.bmp");
-
-	SDL_Rect stretchRect = {0,0,SCREEN_WIDTH, SCREEN_HEIGHT};
-	SDL_Rect tileRect = {0, 0, 120, 120};
-	//SDL_Rect playerRect = {0,0, 120,120};
-
-
 	initGrid(sp_wall, sp_tile);
 	m_tileManager.initGrid(sp_wall, sp_tile);
 
@@ -70,25 +60,8 @@ void Game::g_loop()
 				}
 			}
 		}
-		SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
-		//SDL_RenderClear(m_renderer);
-
-		// render textures here
-		SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00));
-		if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
-		{
-		    SDL_BlitSurfaceScaled(sp_title, NULL, m_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
-		}
-		else
-		{
-			drawGrid();
-		    //generateLevel(tileRect, sp_tile, sp_wall);
-		    SDL_BlitSurfaceScaled(sp_player, NULL, m_surface, &m_player.getRect(), SDL_SCALEMODE_NEAREST);
-			//SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00)); //TEMP
-		}
-		SDL_UpdateWindowSurface(m_window);
-
-		//SDL_RenderPresent(renderer);
+		
+		draw();
 	}
 
 	SDL_DestroySurface(sp_title);
@@ -169,6 +142,21 @@ void Game::update()
 
 void Game::draw()
 {
+	SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
+	//SDL_RenderClear(m_renderer);
+
+	// render textures here
+	SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00));
+	if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
+	{
+		SDL_BlitSurfaceScaled(sp_title, NULL, m_surface, &stretchRect, SDL_SCALEMODE_NEAREST);
+	}
+	else
+	{
+		drawGrid();
+		SDL_BlitSurfaceScaled(sp_player, NULL, m_surface, &m_player.getRect(), SDL_SCALEMODE_NEAREST);
+	}
+	SDL_UpdateWindowSurface(m_window);
 }
 
 void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile) 

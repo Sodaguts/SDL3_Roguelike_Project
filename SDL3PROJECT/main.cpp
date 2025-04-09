@@ -25,6 +25,6 @@ Game* p_game = Game::getInstance();
 
 int main(int argc, char* args[])
 {
-    p_game->update();
+    p_game->g_loop();
     return 1;
 }
