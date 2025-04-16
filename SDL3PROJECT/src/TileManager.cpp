@@ -22,6 +22,8 @@ void TileManager::initGrid(SDL_Surface* spr_wall, SDL_Surface* spr_tile)
 	int tileY = 0;
 	int count = 0;
 
+	canUpdate = true;
+
 	int randMax = 10;
 	int randMin = 2;
 	for (int i = 0; i < 20; i++)

@@ -38,6 +38,10 @@ public:
 		return true;
 	};
 
+	int prevX;
+	int prevY;
+	void setToPrev() { x = prevX; y = prevY; };
+
 
 private:
 	int x;

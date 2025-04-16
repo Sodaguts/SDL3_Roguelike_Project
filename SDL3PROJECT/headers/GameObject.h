@@ -24,7 +24,6 @@ public:
 	void attachController(ControllerComponent* controller) { p_controller = controller; };
 	void attachSprite(SDL_Surface* p_sprite) { mp_sprite = p_sprite; };
 
-	//DEPRECATED
 	int getX() { if (p_controller != nullptr) { return p_controller->getX(); }return 0; };
 	int getY() { if (p_controller != nullptr) { return p_controller->getY(); }return 0; };
 

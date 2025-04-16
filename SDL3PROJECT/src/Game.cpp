@@ -1,9 +1,6 @@
 #include "../headers/Game.h"
 Game* Game::g_instance = nullptr;
 
-//static SDL_Renderer* renderer = NULL;
-
-
 
 void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
 {
@@ -41,12 +38,12 @@ void Game::g_loop()
 {
 	SDL_Event g_event;
 
-	initGrid(sp_wall, sp_tile);
+	//initGrid(sp_wall, sp_tile);
 	m_tileManager.initGrid(sp_wall, sp_tile);
+
 	mp_controller = new ControllerComponent();
 	m_player.attachController(mp_controller);
 
-	// main game loop
 	while (m_isRunning) 
 	{
 		SDL_PollEvent(&g_event);
@@ -163,39 +160,6 @@ void Game::draw()
 		SDL_BlitSurfaceScaled(sp_player, NULL, m_surface, &m_player.getRect(), SDL_SCALEMODE_NEAREST);
 	}
 	SDL_UpdateWindowSurface(m_window);
-}
-
-void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile) 
-{
-
-	//TODO: add a breath first search from entrance to exit that will always exist
-
-	int tileX = 0;
-	int tileY = 0;
-	int count = 0;
-	for (int i = 0; i < 10; i++)
-	{
-		tileX = 0;
-		for (int j = 0; j < 10; j++)
-		{
-			tiles[count].setRectPos(tileX, tileY);
-			if ((j % 2 == 0 && i % 3 == 0))
-			{
-				tiles[count].setSprite(sp_wall);
-				tiles[count].setType(TileType::WALL);
-			}
-			else
-			{
-				tiles[count].setSprite(sp_tile);
-				tiles[count].setType(TileType::WALKABLE);
-			}
-			tileX += 120;
-			count++;
-		}
-		tileY += 120;
-	}
-	tiles[0].setSprite(sp_tile);
-	tiles[0].setType(TileType::WALKABLE);
 }
 
 void Game::drawGrid() 

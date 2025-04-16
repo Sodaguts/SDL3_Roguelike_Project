@@ -19,6 +19,14 @@ public:
 	void initGrid(SDL_Surface* spr_wall, SDL_Surface* spr_tile);
 	SDL_Surface* getSomething() { return msp_something; };
 
+	void setPrevAll() 
+	{
+		for (int i = 0; i < tileCount; i++) 
+		{
+			tiles[i].setToPrev();
+		}
+	}
+
 	void update(SDL_Event e, SDL_Surface* wall, SDL_Surface* tile) 
 	{
 		if (e.type == SDL_EVENT_KEY_DOWN)
@@ -31,12 +39,21 @@ public:
 					m_canRegen = false;
 				}
 			}
+			
 		}
 		else if (e.type == SDL_EVENT_KEY_UP) 
 		{
 			if (e.key.key == SDLK_R) 
 			{
 				m_canRegen = true;
+			}
+			if (e.key.key == SDLK_UP)
+			{
+				canUpdate = true;
+			}
+			if (e.key.key == SDLK_DOWN)
+			{
+				canUpdate = true;
 			}
 		}
 	}
@@ -45,6 +62,8 @@ private:
 	
 	int tileCount = 400;
 	bool m_canRegen = true;
+
+	bool canUpdate;
 
 	void BFS();
 
