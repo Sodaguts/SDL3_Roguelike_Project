@@ -5,8 +5,8 @@
 #include "../headers/GameObject.h"
 #include "../headers/TileManager.h"
 
-#include "../headers/GameScreen.h"
-#include "TitleScreen.h"
+//#include "../headers/GameScreen.h"
+//#include "TitleScreen.h"
 #include "ControllerComponent.h"
 //#include "../headers/TileManager.h"
 
@@ -45,7 +45,7 @@ private:
 	SDL_Renderer* m_renderer;
 	SDL_Surface* m_surface;
 
-	GameScreen screen;
+	//GameScreen screen;
 
 	bool m_isRunning;
 	void update(SDL_Event g_event);

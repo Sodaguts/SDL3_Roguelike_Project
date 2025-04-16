@@ -28,7 +28,7 @@ void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
 		}
 	}
 
-	screen = TitleScreen();
+	//screen = TitleScreen();
 
 }
 
@@ -44,6 +44,7 @@ void Game::g_loop()
 	initGrid(sp_wall, sp_tile);
 	m_tileManager.initGrid(sp_wall, sp_tile);
 	mp_controller = new ControllerComponent();
+	m_player.attachController(mp_controller);
 
 	// main game loop
 	while (m_isRunning) 
@@ -130,7 +131,8 @@ void Game::update(SDL_Event g_event)
 	//g_loop();
 	m_isRunning = handleGameScreen(current_screen, g_event);
 	m_tileManager.update(g_event, sp_wall, sp_tile);
-	m_player.handlePlayerInput(g_event);
+	//m_player.handlePlayerInput(g_event);
+	m_player.update(g_event);
 	for (int i = 0; i < m_tileManager.getCount(); i++)
 	{
 		if (m_tileManager.tiles[i].getType() == TileType::WALL)

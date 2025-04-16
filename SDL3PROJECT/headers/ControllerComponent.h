@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <cstdio>
 
 
 class ControllerComponent 
@@ -13,6 +14,7 @@ public:
 
 	void update(SDL_Event _event);
 	void setStepAmount(int amount) { m_stepAmount = amount; };
+	void setPosition(int x, int y) { m_posX = x; m_posY = y; };
 
 private:
 	int m_posX;

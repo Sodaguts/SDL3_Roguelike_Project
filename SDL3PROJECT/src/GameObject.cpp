@@ -6,75 +6,59 @@ GameObject::~GameObject()
 	SDL_DestroySurface(mp_sprite);
 }
 
-void GameObject::update()
+void GameObject::update(SDL_Event _event)
 {
-	//handlePlayerInput(_event);
-}
-
-
-void GameObject::handlePlayerInput(SDL_Event _event)
-{
-	m_prevX = m_posX;
-	m_prevY = m_posY;
-	switch (_event.type)
+	if (p_controller != nullptr) 
 	{
-	case SDL_EVENT_KEY_DOWN:
-		if (m_playerCanMove)
-		{
-			if (_event.key.key == SDLK_LEFT)
-			{
-				m_posX -= m_playerStep;
-				m_rect = { m_posX, m_posY, 120,120 };
-				m_playerCanMove = false;
-
-			}
-			if (_event.key.key == SDLK_RIGHT)
-			{
-				m_posX += m_playerStep;
-				m_rect = { m_posX, m_posY, 120,120 };
-				m_playerCanMove = false;
-			}
-			if (_event.key.key == SDLK_UP)
-			{
-				m_posY -= m_playerStep;
-				m_rect = { m_posX, m_posY, 120,120 };
-				m_playerCanMove = false;
-			}
-			if (_event.key.key == SDLK_DOWN)
-			{
-				m_posY += m_playerStep;
-				m_rect = { m_posX, m_posY, 120,120 };
-				m_playerCanMove = false;
-			}
-		}
-		break;
-	case SDL_EVENT_KEY_UP:
-		if (_event.key.key == SDLK_LEFT)
-		{
-			m_playerCanMove = true;
-		}
-		if (_event.key.key == SDLK_RIGHT)
-		{
-			m_playerCanMove = true;
-		}
-		if (_event.key.key == SDLK_UP)
-		{
-			m_playerCanMove = true;
-		}
-		if (_event.key.key == SDLK_DOWN)
-		{
-			m_playerCanMove = true;
-		}
-		break;
+		m_prevX = p_controller->getX();
+		m_prevY = p_controller->getY();
+		p_controller->update(_event);
+		m_rect = {p_controller->getX(), p_controller->getY(), 120,120};
 	}
 }
 
 void GameObject::setRectPrev()
 {
-	m_posX = m_prevX;
-	m_posY = m_prevY;
+	if (p_controller != nullptr) 
+	{
+		p_controller->setPosition(m_prevX, m_prevY);
+	}
 	m_rect.x = m_prevX;
 	m_rect.y = m_prevY;
+}
+
+bool GameObject::checkCollision(SDL_Rect other)
+{
+	int leftA = m_rect.x;
+	int rightA = m_rect.x + m_rect.w;
+	int topA = m_rect.y;
+	int botA = m_rect.y + m_rect.h;
+
+	int leftB = other.x;
+	int rightB = other.x + other.w;
+	int topB = other.y;
+	int botB = other.y + other.h;
+
+	if (botA <= topB)
+	{
+		return false;
+	}
+
+	if (topA >= botB)
+	{
+		return false;
+	}
+
+	if (rightA <= leftB)
+	{
+		return false;
+	}
+
+	if (leftA >= rightB)
+	{
+		return false;
+	}
+	return true;
 }
 
 
