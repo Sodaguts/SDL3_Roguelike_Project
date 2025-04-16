@@ -109,7 +109,7 @@ target_include_directories(roguework PRIVATE "headers/")
 
 file(GLOB sources "src/*.cpp")
 
-target_sources(roguework PRIVATE ${sources} "main.cpp" "headers/ControllerComponent.h" "src/ControllerComponent.cpp")
+target_sources(roguework PRIVATE ${sources} "main.cpp")
 target_link_libraries(roguework PRIVATE ${LIBS})
 
 # add images
