@@ -1,8 +1,13 @@
+#pragma once
 #include <SDL3/SDL.h>
 #include <iostream>
 
 #include "../headers/GameObject.h"
 #include "../headers/TileManager.h"
+
+#include "../headers/GameScreen.h"
+#include "TitleScreen.h"
+#include "ControllerComponent.h"
 //#include "../headers/TileManager.h"
 
 
@@ -40,8 +45,10 @@ private:
 	SDL_Renderer* m_renderer;
 	SDL_Surface* m_surface;
 
+	GameScreen screen;
+
 	bool m_isRunning;
-	void update();
+	void update(SDL_Event g_event);
 	void draw();
 
 	bool handleGameScreen(GameScreens _screen, SDL_Event _event);
@@ -63,7 +70,7 @@ private:
 	SDL_Rect stretchRect = { 0,0,SCREEN_WIDTH, SCREEN_HEIGHT };
 	SDL_Rect tileRect = { 0, 0, 120, 120 };
 
-
+	ControllerComponent* mp_controller;
 	//Player shit
 	GameObject m_player;
 

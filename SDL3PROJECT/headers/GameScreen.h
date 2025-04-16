@@ -3,5 +3,10 @@
 
 class GameScreen 
 {
-	virtual void doScreen()=0;
+public:
+	//bool getScreen(SDL_Event _event) { return this->doScreen(_event); };
+	virtual bool doScreen(SDL_Event _event) { return true; };
+
+protected:
+	//virtual bool doScreen(SDL_Event _event) = 0;
 };

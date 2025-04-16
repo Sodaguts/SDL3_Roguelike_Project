@@ -28,6 +28,8 @@ void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
 		}
 	}
 
+	screen = TitleScreen();
+
 }
 
 Game::Game() 
@@ -41,29 +43,17 @@ void Game::g_loop()
 
 	initGrid(sp_wall, sp_tile);
 	m_tileManager.initGrid(sp_wall, sp_tile);
+	mp_controller = new ControllerComponent();
 
 	// main game loop
 	while (m_isRunning) 
 	{
 		SDL_PollEvent(&g_event);
-		m_isRunning = handleGameScreen(current_screen, g_event);
-		m_tileManager.update(g_event, sp_wall, sp_tile);
-		m_player.handlePlayerInput(g_event);
-		for (int i = 0; i < m_tileManager.getCount(); i ++) 
-		{
-			if (m_tileManager.tiles[i].getType() == TileType::WALL) 
-			{
-				if (m_tileManager.tiles[i].getX() == m_player.getX() &&
-					m_tileManager.tiles[i].getY() == m_player.getY())
-				{
-					m_player.setRectPrev();
-				}
-			}
-		}
-		
+		update(g_event);
 		draw();
 	}
 
+	delete mp_controller;
 	SDL_DestroySurface(sp_title);
 }
 
@@ -135,9 +125,23 @@ Game* Game::getInstance()
 }
 
 
-void Game::update()
+void Game::update(SDL_Event g_event)
 {
-	g_loop();
+	//g_loop();
+	m_isRunning = handleGameScreen(current_screen, g_event);
+	m_tileManager.update(g_event, sp_wall, sp_tile);
+	m_player.handlePlayerInput(g_event);
+	for (int i = 0; i < m_tileManager.getCount(); i++)
+	{
+		if (m_tileManager.tiles[i].getType() == TileType::WALL)
+		{
+			if (m_tileManager.tiles[i].getX() == m_player.getX() &&
+				m_tileManager.tiles[i].getY() == m_player.getY())
+			{
+				m_player.setRectPrev();
+			}
+		}
+	}
 }
 
 void Game::draw()
@@ -194,17 +198,14 @@ void Game::initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile)
 
 void Game::drawGrid() 
 {
-	//SDL_BlitSurfaceScaled(m_tileManager.getSomething(), NULL, m_surface, &someRect, SDL_SCALEMODE_NEAREST);
 	int tileX = 0;
 	int tileY = 0;
 	for (int i = 0; i < m_tileManager.getCount(); i++)
 	{
-		//printf("Tile pos x: %s\n", mp_tileManager->getTile(i).getX());
 		if (!m_tileManager.tiles[i].isSpriteSet())
 		{
 			std::cout << "no sprite found at index: " << i << std::endl;
 		}
-		//SDL_BlitSurfaceScaled(tiles[i].getSprite(), NULL, m_surface, &tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
 		SDL_BlitSurfaceScaled(m_tileManager.tiles[i].getSprite(), NULL, m_surface, &m_tileManager.tiles[i].getRect(), SDL_SCALEMODE_NEAREST);
 	}
 }

@@ -1,8 +1,9 @@
+#pragma once
 #include <cstdio>
 #include <SDL3/SDL.h>
 #include "Collider.h"
+#include "ControllerComponent.h"
 
-//#include "../headers/Collider.h"
 
 class GameObject 
 {
@@ -20,7 +21,6 @@ public:
 	};
 	~GameObject();
 	void update();
-	//void draw();
 	void handlePlayerInput(SDL_Event _event);
 
 
@@ -67,7 +67,6 @@ public:
 	void setSprite(SDL_Surface* p_sprite) { mp_sprite = p_sprite; };
 
 private:
-	//void handlePlayerInput(SDL_Event _event);
 	SDL_Rect m_rect;
 	int m_playerStep;
 	int m_posX;
@@ -77,7 +76,9 @@ private:
 	int m_prevX = 0;
 	int m_prevY = 0;
 
+	//does not own these
 	SDL_Surface* mp_sprite;
+	ControllerComponent* p_controller;
 
 
 };

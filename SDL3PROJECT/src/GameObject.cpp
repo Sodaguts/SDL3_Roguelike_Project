@@ -9,7 +9,6 @@ GameObject::~GameObject()
 void GameObject::update()
 {
 	//handlePlayerInput(_event);
-
 }
 
 
