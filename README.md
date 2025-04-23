@@ -18,4 +18,4 @@ Play as the navigator, a contractor tasked with exploring and mapping out "The l
   - enemy sprite []
   - tile sprite [x]
 
-![roguework screenshot](https://github.com/Sodaguts/SDL3_Roguelike_Project/blob/main/screenshot.png?raw=true|width=640)
+<img src="https://github.com/Sodaguts/SDL3_Roguelike_Project/blob/main/screenshot.png" style="width:640">
