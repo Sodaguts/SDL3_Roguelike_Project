@@ -18,5 +18,5 @@ Play as the navigator, a contractor tasked with exploring and mapping out "The l
   - enemy sprite []
   - tile sprite [x]
 
-![image](https://github.com/user-attachments/assets/5f954b92-dbd2-4d92-bb31-27b01a319f89)|width:640
+![image](https://github.com/user-attachments/assets/5f954b92-dbd2-4d92-bb31-27b01a319f89)
 
