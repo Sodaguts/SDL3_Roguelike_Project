@@ -147,7 +147,11 @@ void Game::draw()
 {
 	SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
 	//SDL_RenderClear(m_renderer);
-
+	SDL_Rect enemyRect;
+	enemyRect.x = 0;
+	enemyRect.y = 0;
+	enemyRect.w = 120;
+	enemyRect.h = 120;
 	// render textures here
 	SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00));
 	if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
@@ -157,6 +161,7 @@ void Game::draw()
 	else
 	{
 		drawGrid();
+		SDL_BlitSurfaceScaled(sp_enemy, NULL, m_surface, &enemyRect, SDL_SCALEMODE_NEAREST);
 		SDL_BlitSurfaceScaled(sp_player, NULL, m_surface, &m_player.getRect(), SDL_SCALEMODE_NEAREST);
 	}
 	SDL_UpdateWindowSurface(m_window);

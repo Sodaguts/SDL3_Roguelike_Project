@@ -57,7 +57,7 @@ private:
 	bool doGameplay(SDL_Event _event);
 
 	//put this into a grid manager or something later
-	void initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile);
+	//void initGrid(SDL_Surface* sp_wall, SDL_Surface* sp_tile);
 	void drawGrid();
 
 	//load images
@@ -66,6 +66,7 @@ private:
 	SDL_Surface* sp_tile = loadMediaBMP("tile_walkable_a.bmp");
 	SDL_Surface* sp_player = loadMediaBMP("player_a.bmp");
 	SDL_Surface* sp_wall = loadMediaBMP("tile_wall_a.bmp");
+	SDL_Surface* sp_enemy = loadMediaBMP("enemy_a.bmp");
 
 	SDL_Rect stretchRect = { 0,0,SCREEN_WIDTH, SCREEN_HEIGHT };
 	SDL_Rect tileRect = { 0, 0, 120, 120 };
@@ -73,6 +74,7 @@ private:
 	ControllerComponent* mp_controller;
 	//Player shit
 	GameObject m_player;
+	GameObject test_enemy;
 
 	Tile tiles[100];
 	int tileCount = 100;

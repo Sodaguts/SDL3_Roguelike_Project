@@ -65,7 +65,7 @@ private:
 
 	bool canUpdate;
 
-	void BFS();
+	//void BFS();
 
 	SDL_Surface* msp_tile;
 	SDL_Surface* msp_wall;
