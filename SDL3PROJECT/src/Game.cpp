@@ -134,8 +134,8 @@ void Game::update(SDL_Event g_event)
 	{
 		if (m_tileManager.tiles[i].getType() == TileType::WALL)
 		{
-			if (m_tileManager.tiles[i].getX() == m_player.getX() &&
-				m_tileManager.tiles[i].getY() == m_player.getY())
+			if (m_tileManager.tiles[i].getX() == m_player.getController()->getX() &&
+				m_tileManager.tiles[i].getY() == m_player.getController()->getY())
 			{
 				m_player.setRectPrev();
 			}
@@ -152,6 +152,7 @@ void Game::draw()
 	enemyRect.y = 0;
 	enemyRect.w = 120;
 	enemyRect.h = 120;
+
 	// render textures here
 	SDL_FillSurfaceRect(m_surface, NULL, SDL_MapSurfaceRGB(m_surface, 0x00, 0x00, 0x00));
 	if (current_screen == TITLE)  // TEMP, once other screens are implemented we'll probably want to handle this differently
