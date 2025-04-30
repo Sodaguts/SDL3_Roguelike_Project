@@ -12,6 +12,11 @@ int genEnemyPositionY()
 }
 
 SDL_Rect enemyRect;
+void regenEnemyPosition() 
+{
+	enemyRect.x = genEnemyPositionX();
+	enemyRect.y = genEnemyPositionY();
+}
 
 
 void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
@@ -111,6 +116,7 @@ bool Game::doTitle(SDL_Event _event)
 
 bool Game::doGameplay(SDL_Event _event)
 {
+	bool canRegen = true;
 	switch (_event.type) 
 	{
 		case SDL_EVENT_QUIT:
@@ -121,6 +127,17 @@ bool Game::doGameplay(SDL_Event _event)
 			{
 				current_screen = TITLE;
 				return true;
+			}
+			if (_event.key.key == SDLK_R) 
+			{
+				canRegen = false;
+				regenEnemyPosition();
+			}
+			break;
+		case SDL_EVENT_KEY_UP:
+			if (_event.key.key == SDLK_R) 
+			{
+				canRegen = true;
 			}
 			break;
 	}

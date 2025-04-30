@@ -25,10 +25,18 @@ private:
 		int right;
 		int top;
 		int bottom;
+		void setBounds(SDL_Rect rect) 
+		{
+			left = rect.x;
+			right = rect.x + rect.w;
+			top = rect.y;
+			bottom = rect.y + rect.h;
+		}
 	};
 
 	CollisionBounds setCollisionBoundsOther(SDL_Rect other);
 	CollisionBounds setCollisionBoundsSelf();
+	
 	bool compareBounds(CollisionBounds selfBounds, CollisionBounds otherBounds);
 
 };

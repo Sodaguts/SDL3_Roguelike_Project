@@ -10,20 +10,14 @@ bool Collider::checkCollision(SDL_Rect other)
 Collider::CollisionBounds Collider::setCollisionBoundsOther(SDL_Rect other)
 {
 	CollisionBounds bounds;
-	bounds.left = other.x;
-	bounds.right = other.x + other.w;
-	bounds.top = other.y;
-	bounds.bottom = other.y + other.h;
+	bounds.setBounds(other);
 	return bounds;
 }
 
 Collider::CollisionBounds Collider::setCollisionBoundsSelf()
 {
 	CollisionBounds bounds;
-	bounds.left = m_rect.x;
-	bounds.right = m_rect.x + m_rect.w;
-	bounds.top = m_rect.y;
-	bounds.bottom = m_rect.y + m_rect.h;
+	bounds.setBounds(m_rect);
 	return bounds;
 }
 
