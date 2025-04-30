@@ -14,6 +14,21 @@ public:
 
 	SDL_Rect getRect() { return m_rect; };
 
+	bool checkCollision(SDL_Rect other);
+
 private:
 	SDL_Rect m_rect;
+
+	struct CollisionBounds 
+	{
+		int left;
+		int right;
+		int top;
+		int bottom;
+	};
+
+	CollisionBounds setCollisionBoundsOther(SDL_Rect other);
+	CollisionBounds setCollisionBoundsSelf();
+	bool compareBounds(CollisionBounds selfBounds, CollisionBounds otherBounds);
+
 };

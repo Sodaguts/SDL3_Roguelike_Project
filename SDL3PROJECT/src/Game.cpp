@@ -1,6 +1,18 @@
 #include "../headers/Game.h"
 Game* Game::g_instance = nullptr;
 
+int genEnemyPositionX() 
+{
+	return (rand() % (10 - 1 + 1)) * 120;
+}
+
+int genEnemyPositionY() 
+{
+	return (rand() % (10 - 1 + 1)) * 120;
+}
+
+SDL_Rect enemyRect;
+
 
 void Game::init(const int SCREEN_WIDTH, const int SCREEN_HEIGHT)
 {
@@ -43,6 +55,9 @@ void Game::g_loop()
 
 	mp_controller = new ControllerComponent();
 	m_player.attachController(mp_controller);
+
+	enemyRect.x = genEnemyPositionX();
+	enemyRect.y = genEnemyPositionY();
 
 	while (m_isRunning) 
 	{
@@ -147,9 +162,6 @@ void Game::draw()
 {
 	SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
 	//SDL_RenderClear(m_renderer);
-	SDL_Rect enemyRect;
-	enemyRect.x = 0;
-	enemyRect.y = 0;
 	enemyRect.w = 120;
 	enemyRect.h = 120;
 

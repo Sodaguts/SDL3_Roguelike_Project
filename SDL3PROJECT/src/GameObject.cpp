@@ -3,7 +3,7 @@
 
 GameObject::~GameObject()
 {
-	SDL_DestroySurface(mp_sprite);
+	SDL_DestroySurface(p_sprite);
 }
 
 void GameObject::update(SDL_Event _event)

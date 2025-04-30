@@ -15,16 +15,18 @@ public:
 		m_prevX = 0;
 		m_prevY = 0;
 		m_rect = { 0,0,120,120 };
-		mp_sprite = nullptr;
+		p_sprite = nullptr;
 		p_controller = nullptr;
 	};
 	~GameObject();
 	void update(SDL_Event _event);
 
 	void attachController(ControllerComponent* controller) { p_controller = controller; };
-	void attachSprite(SDL_Surface* p_sprite) { mp_sprite = p_sprite; };
+	void attachCollider(Collider* collider) { p_collider = collider; };
+	void attachSprite(SDL_Surface* _sprite) { p_sprite = _sprite; };
 
 	ControllerComponent* getController() { if (p_controller != nullptr) { return p_controller; } return nullptr; };
+	Collider* getCollider() { if (p_collider != nullptr) { return p_collider; } return nullptr; };
 
 	SDL_Rect& getRect() { return m_rect; };
 	void setRectPrev();
@@ -39,9 +41,9 @@ private:
 	int m_prevX = 0;
 	int m_prevY = 0;
 
-	//does not own these
-	SDL_Surface* mp_sprite;
+	SDL_Surface* p_sprite;
 	ControllerComponent* p_controller;
+	Collider* p_collider;
 
 
 };
